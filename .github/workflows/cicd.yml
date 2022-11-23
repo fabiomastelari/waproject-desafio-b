@@ -23,5 +23,5 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-    - run: cd ./backend && yarn install && yarn test && cd ..
-    - run: cd ./frontend && yarn install && yarn test && cd ..
+    - run: cd ./backend && yarn install && yarn test --passWithNoTests && cd ..
+    - run: cd ./frontend && yarn install && yarn test --passWithNoTests && cd ..
