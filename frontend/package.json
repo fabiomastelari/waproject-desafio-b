@@ -4,7 +4,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest --watch"
+    "test-local": "jest --watch",
+    "test": "jest"
   },
   "dependencies": {
     "@types/axios": "^0.14.0",
