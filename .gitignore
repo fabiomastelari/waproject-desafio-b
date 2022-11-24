@@ -28,8 +28,9 @@
 */**/yarn-error.log*
 */**/.pnpm-debug.log*
 
-# local env files
+# local and production env files
 */**/.env*.local
+*/**/.env
 
 # vercel
 */**/.vercel

@@ -1,11 +1,12 @@
 import { DataSource } from 'typeorm'
+import { normalizePort } from './server-utils'
 
 const mysqlDataSource = new DataSource({
   type: 'mysql',
-  host: 'localhost',
-  port: 3306,
-  username: 'test',
-  password: 'test',
+  host: process.env.MYSQL_HOST ?? 'localhost',
+  port: normalizePort(process.env.MYSQL_PORT, 3306),
+  username: process.env.MYSQL_USERNAME ?? 'dev',
+  password: process.env.MYSQL_PASSWORD ?? 'dev@pwd',
   database: 'wapdb-db',
   entities: ['src/entity/*.ts'],
   migrations: ['src/migrations/*.ts'],
