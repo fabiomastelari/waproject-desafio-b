@@ -2,12 +2,12 @@ import React, { ReactNode } from 'react'
 import Link from 'next/link'
 import Head from 'next/head'
 
-type Props = {
+interface Props {
   children?: ReactNode
   title?: string
 }
 
-const Layout = ({ children, title = 'This is the default title' }: Props) => (
+const Layout = ({ children, title = 'This is the default title' }: Props): React.ReactElement => (
   <div>
     <Head>
       <title>{title}</title>

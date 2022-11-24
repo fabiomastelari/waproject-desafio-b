@@ -26,10 +26,12 @@ jobs:
     - run: |
         cd ./backend
         yarn install
+        yarn lint
         yarn test --passWithNoTests 
         cd ..
     - run: |
         cd ./frontend
         yarn install
+        yarn lint
         yarn test --passWithNoTests
         cd ..
