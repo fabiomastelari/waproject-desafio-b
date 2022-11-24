@@ -31,6 +31,8 @@
 # local and production env files
 */**/.env*.local
 */**/.env
+.env*.local
+.env
 
 # vercel
 */**/.vercel
