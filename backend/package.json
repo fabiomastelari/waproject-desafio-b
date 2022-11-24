@@ -7,7 +7,7 @@
     "test": "jest",
     "dev": "nodemon --watch 'src/' --exec 'ts-node src/server.ts' -e ts",
     "start": "node dist/app.js",
-    "build": "babel src --out-dir dist --no-copy-ignored"
+    "build": "yarn babel src --out-dir dist --extensions .ts --no-copy-ignored"
   },
   "dependencies": {
     "axios": "^1.2.0",
