@@ -50,6 +50,7 @@ jobs:
         yarn install
         yarn build
         cp package.json ./dist/
+        [ -s "$PWD/.env" ] && cp "$PWD/.env" ./dist/
     - name: Publish
       uses: ArthurYdalgo/github-action-scp@master
       with:
@@ -87,7 +88,7 @@ jobs:
         cd ./frontend
         yarn install
         yarn build
-        tar --exclude={"README.md","next-env.d.ts","jest.config.ts",".eslintrc.json","__tests__",".next","node_modules",".swc","coverage","out"} -zcvf ../build-content.tar.gz .
+        tar --exclude={".env.sample",".env.local","README.md","next-env.d.ts","jest.config.ts",".eslintrc.json","__tests__",".next","node_modules",".swc","coverage","out"} -zcvf ../build-content.tar.gz .
     - name: Publish
       uses: ArthurYdalgo/github-action-scp@master
       with:
