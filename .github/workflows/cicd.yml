@@ -16,7 +16,6 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: '12.22.12'
-        cache: yarn
     - run: |
         cd ./backend
         yarn install
@@ -24,6 +23,7 @@ jobs:
         yarn test --passWithNoTests 
   tests-app:
     runs-on: ubuntu-latest
+    needs: [tests-api]
     name: Check APP Lint and run Tests
     steps:
     - uses: actions/checkout@v3
@@ -31,7 +31,6 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: '12.22.12'
-        cache: yarn
     - run: |
         cd ./frontend
         yarn install
@@ -39,6 +38,7 @@ jobs:
         yarn test --passWithNoTests
   deploy-api:
     runs-on: ubuntu-latest
+    needs: [tests-api, tests-app]
     name: Build and Deploy API
     steps:
     - uses: actions/checkout@v3
@@ -46,7 +46,6 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: '12.22.12'
-        cache: yarn
     - run: |
         cd ./backend
         yarn install
@@ -63,6 +62,7 @@ jobs:
         target: "~/wpdesafiob-api.mastelari.ml/"
   deploy-app:
     runs-on: ubuntu-latest
+    needs: [deploy-api]
     name: Build and Deploy APP
     steps:
     - uses: actions/checkout@v3
@@ -70,7 +70,6 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: '12.22.12'
-        cache: yarn
     - run: |
         cd ./frontend
         yarn install
