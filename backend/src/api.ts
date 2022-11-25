@@ -45,7 +45,7 @@ if (process.env.NODE_ENV !== 'test') {
     algorithms: [getAuth0CriptAlgorithm(process.env.AUTH0_ALGORITHM, 'RS256')]
   })
 
-  api.use(jwtCheck)
+  api.use(jwtCheck)// eslint-disable-line @typescript-eslint/no-misused-promises
 }
 
 api.use('/', ApiRouter)

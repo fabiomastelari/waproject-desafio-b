@@ -1,4 +1,5 @@
-import { Algorithm as JWTAlgorithm } from 'jsonwebtoken';
+import { Algorithm as JWTAlgorithm } from 'jsonwebtoken'
+
 export function normalizePort (portValue: number | string | undefined, defaultPortValue: number): number {
   let normalizedPort: number = defaultPortValue
   if (typeof portValue === 'number') {
