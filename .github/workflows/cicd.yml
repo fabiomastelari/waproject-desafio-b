@@ -13,9 +13,10 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Bucket actions
-      uses: mskelton/setup-yarn@v1
+      uses: actions/setup-node@v3
       with:
         node-version: '12.22.12'
+        cache: yarn
     - run: |
         cd ./backend
         yarn install
@@ -27,9 +28,10 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Bucket actions
-      uses: mskelton/setup-yarn@v1
+      uses: actions/setup-node@v3
       with:
         node-version: '12.22.12'
+        cache: yarn
     - run: |
         cd ./frontend
         yarn install
@@ -41,9 +43,10 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Bucket actions
-      uses: mskelton/setup-yarn@v1
+      uses: actions/setup-node@v3
       with:
         node-version: '12.22.12'
+        cache: yarn
     - run: |
         cd ./backend
         yarn install
@@ -64,9 +67,10 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Bucket actions
-      uses: mskelton/setup-yarn@v1
+      uses: actions/setup-node@v3
       with:
         node-version: '12.22.12'
+        cache: yarn
     - run: |
         cd ./frontend
         yarn install
