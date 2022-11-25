@@ -50,7 +50,6 @@ jobs:
         yarn install
         yarn build
         cp package.json ./dist/
-        [ -s "$PWD/.env" ] && cp "$PWD/.env" ./dist/
     - name: Publish
       uses: ArthurYdalgo/github-action-scp@master
       with:
