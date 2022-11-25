@@ -40,3 +40,7 @@
 # typescript
 */**/*.tsbuildinfo
 */**/next-env.d.ts
+
+# other
+*/**/.swc
+.swc
