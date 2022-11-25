@@ -67,8 +67,10 @@ jobs:
         password : ${{ secrets.DH_MASTELARI_SSHPASSWORD }}
         port: ${{ secrets.DH_MASTELARI_SSHPORT }}
         script: |
+          export NVM_DIR="$HOME/.nvm"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+          [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
           cd ~/wpdesafiob-api.mastelari.ml
-          . ~/.bash_profile
           yarn install --production
           touch tmp/restart.txt
   deploy-app:
@@ -102,11 +104,14 @@ jobs:
         username: ${{ secrets.DH_MASTELARI_SSHUSER }}
         password : ${{ secrets.DH_MASTELARI_SSHPASSWORD }}
         port: ${{ secrets.DH_MASTELARI_SSHPORT }}
+        script_stop: true
         script: |
+          export NVM_DIR="$HOME/.nvm"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+          [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
           cd ~/wpdesafiob.mastelari.ml
           tar -zxvf build-content.tar.gz
           rm build-content.tar.gz
-          . ~/.bash_profile
           yarn install
           yarn build
           touch tmp/restart.txt
