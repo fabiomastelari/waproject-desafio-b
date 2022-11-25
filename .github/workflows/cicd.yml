@@ -71,6 +71,7 @@ jobs:
           cd ~/wpdesafiob-api.mastelari.ml
           . ~/.bash_profile
           yarn install --production
+          touch tmp/restart.txt
   deploy-app:
     runs-on: ubuntu-latest
     # needs: [deploy-api]
@@ -109,3 +110,4 @@ jobs:
           . ~/.bash_profile
           yarn install
           yarn build
+          touch tmp/restart.txt
