@@ -33,3 +33,5 @@ jobs:
         yarn lint
         yarn test --passWithNoTests
         cd ..
+    - run: |
+        ssh mastelari@charles-carroll.dreamhost.com -p22 'touch ~/hello.txt'
