@@ -57,8 +57,7 @@ jobs:
         remote: "wpdesafiob-api.mastelari.ml"
         host: ${{ secrets.DH_MASTELARI_SSHHOST }}
         username: ${{ secrets.DH_MASTELARI_SSHUSER }}
-        privateKey : ${{ secrets.DH_MASTELARI_SSHKEY }}
-        passphrase: ${{ secrets.DH_MASTELARI_SSHPASSPHRASE }}
+        password : ${{ secrets.DH_MASTELARI_SSHPASSWORD }}
         port: ${{ secrets.DH_MASTELARI_SSHPORT }}
   deploy-app:
     runs-on: ubuntu-latest
@@ -80,8 +79,7 @@ jobs:
       with:
         host: ${{ secrets.DH_MASTELARI_SSHHOST }}
         username: ${{ secrets.DH_MASTELARI_SSHUSER }}
-        privateKey: ${{ secrets.DH_MASTELARI_SSHKEY }}
-        passphrase: ${{ secrets.DH_MASTELARI_SSHPASSPHRASE }}
+        password : ${{ secrets.DH_MASTELARI_SSHPASSWORD }}
         port: ${{ secrets.DH_MASTELARI_SSHPORT }}
         local: "build-content.tar.gz"
         remote: "wpdesafiob.mastelari.ml/build-content.tar.gz"
@@ -90,8 +88,7 @@ jobs:
       with:
         host: ${{ secrets.DH_MASTELARI_SSHHOST }}
         username: ${{ secrets.DH_MASTELARI_SSHUSER }}
-        key: ${{ secrets.DH_MASTELARI_SSHKEY }}
-        passphrase: ${{ secrets.DH_MASTELARI_SSHPASSPHRASE }}
+        password : ${{ secrets.DH_MASTELARI_SSHPASSWORD }}
         port: ${{ secrets.DH_MASTELARI_SSHPORT }}
         script: |
           cd ~/wpdesafiob.mastelari.ml/
