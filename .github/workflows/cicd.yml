@@ -38,7 +38,7 @@ jobs:
         yarn test --passWithNoTests
   deploy-api:
     runs-on: ubuntu-latest
-    needs: [tests-api, tests-app]
+    # needs: [tests-api, tests-app]
     name: Build and Deploy API
     steps:
     - uses: actions/checkout@v3
@@ -53,7 +53,7 @@ jobs:
     - name: Publish
       uses: ArthurYdalgo/github-action-scp@master
       with:
-        local: "dist"
+        local: "backend/dist"
         remote: "wpdesafiob-api.mastelari.ml"
         host: ${{ secrets.DH_MASTELARI_SSHHOST }}
         username: ${{ secrets.DH_MASTELARI_SSHUSER }}
@@ -62,7 +62,7 @@ jobs:
         port: ${{ secrets.DH_MASTELARI_SSHPORT }}
   deploy-app:
     runs-on: ubuntu-latest
-    needs: [deploy-api]
+    # needs: [deploy-api]
     name: Build and Deploy APP
     steps:
     - uses: actions/checkout@v3
@@ -74,8 +74,7 @@ jobs:
         cd ./frontend
         yarn install
         yarn build
-        cd ..
-        tar --exclude={"README.md","next-env.d.ts","jest.config.ts",".eslintrc.json","__tests__",".next","node_modules",".swc","coverage","out"} -zcvf build-content.tar.gz ./frontend
+        tar --exclude={"README.md","next-env.d.ts","jest.config.ts",".eslintrc.json","__tests__",".next","node_modules",".swc","coverage","out"} -zcvf ../build-content.tar.gz .
     - name: Publish
       uses: ArthurYdalgo/github-action-scp@master
       with:
