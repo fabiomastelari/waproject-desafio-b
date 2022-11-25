@@ -6,32 +6,90 @@ name: WA Project Desafio B CI - Continuous Integration
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
 jobs:
-  run-tests:
+  tests-api:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [12.x]
+    name: Check API Lint and run Tests
     steps:
     - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
+    - name: Bucket actions
+      uses: mskelton/setup-yarn@v1
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: '12.22.12'
     - run: |
         cd ./backend
         yarn install
         yarn lint
         yarn test --passWithNoTests 
-        cd ..
+  tests-app:
+    runs-on: ubuntu-latest
+    name: Check APP Lint and run Tests
+    steps:
+    - uses: actions/checkout@v3
+    - name: Bucket actions
+      uses: mskelton/setup-yarn@v1
+      with:
+        node-version: '12.22.12'
     - run: |
         cd ./frontend
         yarn install
         yarn lint
         yarn test --passWithNoTests
-        cd ..
+  deploy-api:
+    runs-on: ubuntu-latest
+    name: Build and Deploy API
+    steps:
+    - uses: actions/checkout@v3
+    - name: Bucket actions
+      uses: mskelton/setup-yarn@v1
+      with:
+        node-version: '12.22.12'
     - run: |
-        ssh mastelari@charles-carroll.dreamhost.com -p22 'touch ~/hello.txt'
+        cd ./backend
+        yarn install
+        yarn build
+    - name: Publish
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.DH_MASTELARI_SSHHOST }}
+        username: ${{ secrets.DH_MASTELARI_SSHUSER }}
+        key: ${{ secrets.DH_MASTELARI_SSHKEY }}
+        passphrase: ${{ secrets.DH_MASTELARI_SSHPASSPHRASE }}
+        port: ${{ secrets.DH_MASTELARI_SSHPORT }}
+        source: "./dist/*"
+        target: "~/wpdesafiob-api.mastelari.ml/"
+  deploy-app:
+    runs-on: ubuntu-latest
+    name: Build and Deploy APP
+    steps:
+    - uses: actions/checkout@v3
+    - name: Bucket actions
+      uses: mskelton/setup-yarn@v1
+      with:
+        node-version: '12.22.12'
+    - run: |
+        cd ./frontend
+        yarn install
+        yarn build
+    - name: Publish
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.DH_MASTELARI_SSHHOST }}
+        username: ${{ secrets.DH_MASTELARI_SSHUSER }}
+        key: ${{ secrets.DH_MASTELARI_SSHKEY }}
+        passphrase: ${{ secrets.DH_MASTELARI_SSHPASSPHRASE }}
+        port: ${{ secrets.DH_MASTELARI_SSHPORT }}
+        source: "./components/*,./pages/*,./public/*,next.config.js,package.json,tsconfig.json,yarn.lock"
+        target: "~/wpdesafiob.mastelari.ml/"
+    - name: Post-publishing actions
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.DH_MASTELARI_SSHHOST }}
+        username: ${{ secrets.DH_MASTELARI_SSHUSER }}
+        key: ${{ secrets.DH_MASTELARI_SSHKEY }}
+        passphrase: ${{ secrets.DH_MASTELARI_SSHPASSPHRASE }}
+        port: ${{ secrets.DH_MASTELARI_SSHPORT }}
+        script: |
+          cd ~/wpdesafiob.mastelari.ml/
+          yarn install
+          yarn build
