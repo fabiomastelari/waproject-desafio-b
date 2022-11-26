@@ -5,13 +5,12 @@ import { expressjwt, GetVerificationKey } from 'express-jwt'
 import jwksRsa from 'jwks-rsa'
 import helmet from 'helmet'
 import morgan from 'morgan'
-import { mysqlDataSource, sqliteDataSource } from './data-source'
 import ApiRouter from './router'
 import { getAuth0CriptAlgorithm } from './server-utils'
+import datasource from './datasource'
 
-const dataSource = process.env.NODE_ENV === 'test' ? sqliteDataSource : mysqlDataSource
 // establish database connection
-dataSource.initialize()
+datasource.initialize()
   .then(() => {
     console.log('Data Source has been initialized!')
   })
@@ -30,7 +29,7 @@ api.use(morgan('combined')) // To include logging of HTTP requests
 
 api.use(bodyParser.json()) // To parse JSON bodies into JS objects
 
-if (process.env.NODE_ENV !== 'test') {
+if (process.env.NODE_ENV !== 'test' && process.env.DISABLE_AUTH0 !== '1') {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment
   const jwtCheck = expressjwt({
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
