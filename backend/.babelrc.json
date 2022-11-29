@@ -4,13 +4,25 @@
       "@babel/preset-env",
       {
         "targets": {
-          "node": "current"
+          "node": "12.22.12"
         }
       }
     ],
-    "@babel/preset-typescript"
+    [
+      "@babel/preset-typescript",
+      { 
+        "onlyRemoveTypeImports": true 
+      }
+    ]
   ],
   "ignore": [
     "**/*.test.ts"
+  ],
+  "plugins": [ 
+    ["@babel/plugin-proposal-decorators", { "legacy": true }],
+    ["@babel/plugin-proposal-class-properties", { "loose" : true }],
+    ["@babel/plugin-proposal-private-property-in-object", { "loose": true }],
+    ["@babel/plugin-proposal-private-methods", { "loose": true }],
+    "babel-plugin-parameter-decorator"
   ]
 }

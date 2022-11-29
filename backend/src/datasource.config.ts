@@ -15,8 +15,8 @@ export const getDatasourceConfig = (): DataSourceOptions => {
         username: normalizeStringValue(process.env.MYSQL_USERNAME, 'dev'),
         password: normalizeStringValue(process.env.MYSQL_PASSWORD, 'dev@local'),
         database: normalizeStringValue(process.env.MYSQL_DATABASE_NAME, 'wapdb-db'),
-        entities: ['src/entity/*.ts'],
-        migrations: ['src/migration/*.ts'],
+        entities: [`src/entity/*.${process.env.NODE_ENV === 'dev' ? 'ts' : 'js'}`],
+        migrations: [`src/migration/*.${process.env.NODE_ENV === 'dev' ? 'ts' : 'js'}`],
         migrationsTableName: 'data_migrations',
         logging: ['warn', 'error'],
         logger: 'file'

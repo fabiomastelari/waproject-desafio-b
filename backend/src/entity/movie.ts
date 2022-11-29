@@ -3,21 +3,21 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity({ name: 'movies' })
 export class Movie {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({ type: 'int' })
   id!: number
 
-  @Column()
+  @Column({ type: 'varchar' })
   title!: string
 
-  @Column()
+  @Column({ type: 'varchar' })
   banner!: string
 
-  @Column()
+  @Column({ type: 'text' })
   description!: string
 
-  @Column()
+  @Column({ type: 'varchar' })
   director!: string
 
-  @Column()
+  @Column({ type: 'varchar' })
   producer!: string
 }

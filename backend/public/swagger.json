@@ -1,0 +1,151 @@
+{
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {
+			"RawMovie": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"title": {
+						"type": "string"
+					},
+					"banner": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"director": {
+						"type": "string"
+					},
+					"producer": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"title",
+					"banner",
+					"description",
+					"director",
+					"producer"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"SyncMoviesReturn": {
+				"properties": {
+					"movies_added": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"movies_added"
+				],
+				"type": "object",
+				"additionalProperties": false
+			}
+		},
+		"securitySchemes": {}
+	},
+	"info": {
+		"title": "wa-project-desafio-b-api",
+		"version": "0.1.0",
+		"description": "WA Project Desafio B API",
+		"contact": {}
+	},
+	"openapi": "3.0.0",
+	"paths": {
+		"/movies": {
+			"get": {
+				"operationId": "List",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/RawMovie"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "page",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/movies/{userId}": {
+			"get": {
+				"operationId": "Get",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/RawMovie"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/movies/sync": {
+			"post": {
+				"operationId": "Sync",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SyncMoviesReturn"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "/"
+		}
+	]
+}
