@@ -60,27 +60,30 @@ jobs:
     - name: Setup .env file - Copy from sample
       run: cp .env.sample dist/.env
       working-directory: ./backend
+    - name: Setup .env file - Check sed version
+      run: sed --version
+      working-directory: ./backend/dist
     - name: Setup .env file - Set NODE_ENV to prod
-      run: sed -i ''s/<node_env>/prod/'' .env
+      run: sed -i 's/<node_env>/prod/' .env
       working-directory: ./backend/dist
     - name: Setup .env file - Set API_PORT to 80
-      run: sed -i ''s/<api_port>/80/'' .env
+      run: sed -i 's/<api_port>/80/' .env
       working-directory: ./backend/dist      
     - name: Setup .env file - Set MySQL environment variables
       run: |
-        sed -i ''s/<mysql_host>/''"''"''${{ secrets.DH_MASTELARI_MYSQL_HOST }}''"''"''/'' .env
-        sed -i ''s/<mysql_port>/${{ secrets.DH_MASTELARI_MYSQL_PORT }}/'' .env
-        sed -i ''s/<mysql_user>/''"''"''${{ secrets.DH_MASTELARI_MYSQL_USER }}''"''"''/'' .env
-        sed -i ''s/<mysql_user_password>/''"''"''${{ secrets.DH_MASTELARI_MYSQL_USER_PASSWORD }}''"''"''/'' .env
-        sed -i ''s/<mysql_database_name>/''"''"''${{ secrets.DH_MASTELARI_MYSQL_DATABASE_NAME }}''"''"''/'' .env
+        sed -i 's/<mysql_host>/'"'"'${{ secrets.DH_MASTELARI_MYSQL_HOST }}'"'"'/' .env
+        sed -i 's/<mysql_port>/${{ secrets.DH_MASTELARI_MYSQL_PORT }}/' .env
+        sed -i 's/<mysql_user>/'"'"'${{ secrets.DH_MASTELARI_MYSQL_USER }}'"'"'/' .env
+        sed -i 's/<mysql_user_password>/'"'"'${{ secrets.DH_MASTELARI_MYSQL_USER_PASSWORD }}'"'"'/' .env
+        sed -i 's/<mysql_database_name>/'"'"'${{ secrets.DH_MASTELARI_MYSQL_DATABASE_NAME }}'"'"'/' .env
       working-directory: ./backend/dist
     - name: Setup .env file - Set AUTH0 environment variables
       run: |
-        sed -i ''s/<disable_auth0>/1/'' .env
-        sed -i ''s/<auth0_subdomain>/${{ secrets.DH_MASTELARI_AUTH0_SUBDOMAIN }}/'' .env
-        sed -i ''s/<auth0_region>/${{ secrets.DH_MASTELARI_AUTH0_REGION }}/'' .env
-        sed -i ''s/<auth0_app_audience>/${{ secrets.DH_MASTELARI_AUTH0_APP_AUDIENCE }}/'' .env
-        sed -i ''s/<auth0_app_cript_algorithm>/${{ secrets.DH_MASTELARI_AUTH0_APP_CRIPT_ALGORITHM }}/'' .env
+        sed -i 's/<disable_auth0>/1/' .env
+        sed -i 's/<auth0_subdomain>/${{ secrets.DH_MASTELARI_AUTH0_SUBDOMAIN }}/' .env
+        sed -i 's/<auth0_region>/${{ secrets.DH_MASTELARI_AUTH0_REGION }}/' .env
+        sed -i 's/<auth0_app_audience>/${{ secrets.DH_MASTELARI_AUTH0_APP_AUDIENCE }}/' .env
+        sed -i 's/<auth0_app_cript_algorithm>/${{ secrets.DH_MASTELARI_AUTH0_APP_CRIPT_ALGORITHM }}/' .env
       working-directory: ./backend/dist
     - name: Publish files from dist folder to remote server
       uses: ArthurYdalgo/github-action-scp@master
