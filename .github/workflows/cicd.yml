@@ -77,12 +77,24 @@ jobs:
         sed -i 's/<mysql_user_password>/'"'"'${{ secrets.DH_MASTELARI_MYSQL_USER_PASSWORD }}'"'"'/' .env
         sed -i 's/<mysql_database_name>/'"'"'${{ secrets.DH_MASTELARI_MYSQL_DATABASE_NAME }}'"'"'/' .env
       working-directory: ./backend/dist
-    - name: Setup .env file - Set AUTH0 environment variables
+    - name: Setup .env file - Set AUTH0 environment variables - DISABLE_AUTH0
       run: |
-        sed -i 's/<disable_auth0>/1/' .env
+        sed -i 's/<disable_auth0>/ 1/' .env
+      working-directory: ./backend/dist
+    - name: Setup .env file - Set AUTH0 environment variables - AUTH0_SUBDOMAIN
+      run: |
         sed -i 's/<auth0_subdomain>/${{ secrets.DH_MASTELARI_AUTH0_SUBDOMAIN }}/' .env
+      working-directory: ./backend/dist
+    - name: Setup .env file - Set AUTH0 environment variables - AUTH0_REGION
+      run: |
         sed -i 's/<auth0_region>/${{ secrets.DH_MASTELARI_AUTH0_REGION }}/' .env
+      working-directory: ./backend/dist
+    - name: Setup .env file - Set AUTH0 environment variables - AUTH0_APP_AUDIENCE
+      run: |
         sed -i 's/<auth0_app_audience>/${{ secrets.DH_MASTELARI_AUTH0_APP_AUDIENCE }}/' .env
+      working-directory: ./backend/dist
+    - name: Setup .env file - Set AUTH0 environment variables - AUTH0_APP_CRIPT_ALGORITHM
+      run: |
         sed -i 's/<auth0_app_cript_algorithm>/${{ secrets.DH_MASTELARI_AUTH0_APP_CRIPT_ALGORITHM }}/' .env
       working-directory: ./backend/dist
     - name: Publish files from dist folder to remote server
