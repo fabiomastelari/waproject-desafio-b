@@ -51,18 +51,18 @@ jobs:
         yarn build
         cp -r ./public ./dist/public
         cp ./.env.sample ./dist/.env
-        sed -i -E 's/<node_env>/prod/g' ./dist/.env
-        sed -i -E 's/<mysql_host>/'"'"'${{ secrets.DH_MASTELARI_MYSQL_HOST }}'"'"'/g' ./dist/.env
-        sed -i -E 's/<mysql_port>/${{ secrets.DH_MASTELARI_MYSQL_PORT }}/g' ./dist/.env
-        sed -i -E 's/<mysql_user>/'"'"'${{ secrets.DH_MASTELARI_MYSQL_USER }}'"'"'/g' ./dist/.env
-        sed -i -E 's/<mysql_user_password>/'"'"'${{ secrets.DH_MASTELARI_MYSQL_USER_PASSWORD }}'"'"'/g' ./dist/.env
-        sed -i -E 's/<mysql_database_name>/'"'"'${{ secrets.DH_MASTELARI_MYSQL_DATABASE_NAME }}'"'"'/g' ./dist/.env
-        sed -i -E 's/<api_port>/80/g' ./dist/.env
-        sed -i -E 's/<disable_auth0>/1/g' ./dist/.env
-        sed -i -E 's/<auth0_subdomain>/${{ secrets.DH_MASTELARI_AUTH0_SUBDOMAIN }}/g' ./dist/.env
-        sed -i -E 's/<auth0_region>/${{ secrets.DH_MASTELARI_AUTH0_REGION }}/g' ./dist/.env
-        sed -i -E 's/<auth0_app_audience>/${{ secrets.DH_MASTELARI_AUTH0_APP_AUDIENCE }}/g' ./dist/.env
-        sed -i -E 's/<auth0_app_cript_algorithm>/${{ secrets.DH_MASTELARI_AUTH0_APP_CRIPT_ALGORITHM }}/g' ./dist/.env
+        sed -i 's/<node_env>/prod/' ./dist/.env
+        sed -i 's/<mysql_host>/'"'"'${{ secrets.DH_MASTELARI_MYSQL_HOST }}'"'"'/' ./dist/.env
+        sed -i 's/<mysql_port>/${{ secrets.DH_MASTELARI_MYSQL_PORT }}/' ./dist/.env
+        sed -i 's/<mysql_user>/'"'"'${{ secrets.DH_MASTELARI_MYSQL_USER }}'"'"'/' ./dist/.env
+        sed -i 's/<mysql_user_password>/'"'"'${{ secrets.DH_MASTELARI_MYSQL_USER_PASSWORD }}'"'"'/' ./dist/.env
+        sed -i 's/<mysql_database_name>/'"'"'${{ secrets.DH_MASTELARI_MYSQL_DATABASE_NAME }}'"'"'/' ./dist/.env
+        sed -i 's/<api_port>/80/' ./dist/.env
+        sed -i 's/<disable_auth0>/1/' ./dist/.env
+        sed -i 's/<auth0_subdomain>/${{ secrets.DH_MASTELARI_AUTH0_SUBDOMAIN }}/' ./dist/.env
+        sed -i 's/<auth0_region>/${{ secrets.DH_MASTELARI_AUTH0_REGION }}/' ./dist/.env
+        sed -i 's/<auth0_app_audience>/${{ secrets.DH_MASTELARI_AUTH0_APP_AUDIENCE }}/' ./dist/.env
+        sed -i 's/<auth0_app_cript_algorithm>/${{ secrets.DH_MASTELARI_AUTH0_APP_CRIPT_ALGORITHM }}/' ./dist/.env
     - name: Publish
       uses: ArthurYdalgo/github-action-scp@master
       with:
