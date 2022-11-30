@@ -1,18 +1,22 @@
 import { Algorithm as JWTAlgorithm } from 'jsonwebtoken'
 
-export function normalizePort (portValue: number | string | undefined, defaultPortValue: number): number {
-  let normalizedPort: number = defaultPortValue
-  if (typeof portValue === 'number') {
-    if (portValue >= 0) {
-      normalizedPort = portValue
+export function normalizePositiveDecimalValue (decimalPositiveValue: number | string | undefined, defaultDecimalPositiveValue: number): number {
+  let normalizedPositiveDecimalValue: number = defaultDecimalPositiveValue
+  if (typeof decimalPositiveValue === 'number') {
+    if (decimalPositiveValue >= 0) {
+      normalizedPositiveDecimalValue = decimalPositiveValue
     }
-  } else if (typeof portValue !== 'undefined') {
-    const parsedPortValue = parseInt(portValue, 10)
-    if (!isNaN(parsedPortValue)) {
-      normalizedPort = parsedPortValue
+  } else if (typeof decimalPositiveValue !== 'undefined') {
+    const parsedPositiveDecimalValue = parseInt(decimalPositiveValue, 10)
+    if (!isNaN(parsedPositiveDecimalValue)) {
+      normalizedPositiveDecimalValue = parsedPositiveDecimalValue
     }
   }
-  return normalizedPort
+  return normalizedPositiveDecimalValue
+}
+
+export function normalizeStringValue (stringValue: string | undefined, defaultStringValue: string): string {
+  return stringValue !== undefined ? stringValue : defaultStringValue
 }
 
 export function getAuth0CriptAlgorithm (algorithmValue: string | undefined, defaultAlgorithmValue: JWTAlgorithm): JWTAlgorithm {

@@ -5,13 +5,13 @@ import { expressjwt, GetVerificationKey } from 'express-jwt'
 import jwksRsa from 'jwks-rsa'
 import helmet from 'helmet'
 import morgan from 'morgan'
-import { mysqlDataSource, sqliteDataSource } from './data-source'
-import ApiRouter from './router'
 import { getAuth0CriptAlgorithm } from './server-utils'
+import datasource from './datasource'
+import { RegisterRoutes } from './routes/routes'
+import swaggerUi from 'swagger-ui-express'
 
-const dataSource = process.env.NODE_ENV === 'test' ? sqliteDataSource : mysqlDataSource
 // establish database connection
-dataSource.initialize()
+datasource.initialize()
   .then(() => {
     console.log('Data Source has been initialized!')
   })
@@ -22,6 +22,8 @@ dataSource.initialize()
 // create and setup express app
 const api = express()
 
+api.use(express.static('public'))
+
 api.use(helmet()) // To enhance API's security
 
 api.use(cors()) // To enable CORS for all requests
@@ -30,7 +32,7 @@ api.use(morgan('combined')) // To include logging of HTTP requests
 
 api.use(bodyParser.json()) // To parse JSON bodies into JS objects
 
-if (process.env.NODE_ENV !== 'test') {
+if (process.env.NODE_ENV !== 'test' && process.env.DISABLE_AUTH0 !== '1') {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment
   const jwtCheck = expressjwt({
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -48,6 +50,16 @@ if (process.env.NODE_ENV !== 'test') {
   api.use(jwtCheck)// eslint-disable-line @typescript-eslint/no-misused-promises
 }
 
-api.use('/', ApiRouter)
+RegisterRoutes(api)
+
+api.use(
+  '/docs',
+  swaggerUi.serve,
+  swaggerUi.setup(undefined, {
+    swaggerOptions: {
+      url: '/swagger.json'
+    }
+  })
+)
 
 export default api
