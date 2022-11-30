@@ -57,12 +57,14 @@ jobs:
     - name: Copying static public files
       run: cp -r public dist/public
       working-directory: ./backend
+    - name: Copying package.json and yarn.lock
+      run: |
+        cp package.json dist/
+        cp yarn.lock dist/
+      working-directory: ./backend
     - name: Setup .env file - Copy from sample
       run: cp .env.sample dist/.env
       working-directory: ./backend
-    - name: Setup .env file - Check sed version
-      run: sed --version
-      working-directory: ./backend/dist
     - name: Setup .env file - Set NODE_ENV to prod
       run: sed -i 's/<node_env>/prod/' .env
       working-directory: ./backend/dist
@@ -119,7 +121,7 @@ jobs:
           [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
           cd ~/wpdesafiob-api.mastelari.ml
           yarn install --production
-          yarn migration:run
+          yarn migration:run:prod
           touch tmp/restart.txt
   deploy-app:
     runs-on: ubuntu-latest
