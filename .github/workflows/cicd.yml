@@ -38,6 +38,9 @@ jobs:
   deploy-api:
     runs-on: ubuntu-latest
     needs: [tests-api, tests-app]
+    defaults:
+      run:
+        shell: bash
     name: Build and Deploy API
     steps:
     - uses: actions/checkout@v3
@@ -45,24 +48,31 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: '12.22.12'
-    - run: |
-        cd ./backend
-        yarn install
-        yarn build
-        cp -r ./public ./dist/public
-        cp ./.env.sample ./dist/.env
-        sed -i 's/<node_env>/prod/' ./dist/.env
-        sed -i 's/<mysql_host>/'"'"'${{ secrets.DH_MASTELARI_MYSQL_HOST }}'"'"'/' ./dist/.env
-        sed -i 's/<mysql_port>/${{ secrets.DH_MASTELARI_MYSQL_PORT }}/' ./dist/.env
-        sed -i 's/<mysql_user>/'"'"'${{ secrets.DH_MASTELARI_MYSQL_USER }}'"'"'/' ./dist/.env
-        sed -i 's/<mysql_user_password>/'"'"'${{ secrets.DH_MASTELARI_MYSQL_USER_PASSWORD }}'"'"'/' ./dist/.env
-        sed -i 's/<mysql_database_name>/'"'"'${{ secrets.DH_MASTELARI_MYSQL_DATABASE_NAME }}'"'"'/' ./dist/.env
-        sed -i 's/<api_port>/80/' ./dist/.env
-        sed -i 's/<disable_auth0>/1/' ./dist/.env
-        sed -i 's/<auth0_subdomain>/${{ secrets.DH_MASTELARI_AUTH0_SUBDOMAIN }}/' ./dist/.env
-        sed -i 's/<auth0_region>/${{ secrets.DH_MASTELARI_AUTH0_REGION }}/' ./dist/.env
-        sed -i 's/<auth0_app_audience>/${{ secrets.DH_MASTELARI_AUTH0_APP_AUDIENCE }}/' ./dist/.env
-        sed -i 's/<auth0_app_cript_algorithm>/${{ secrets.DH_MASTELARI_AUTH0_APP_CRIPT_ALGORITHM }}/' ./dist/.env
+    - name: Installing packages
+      run: yarn install
+      working-directory: ./backend
+    - name: Building
+      run: yarn build
+      working-directory: ./backend
+    - name: Copying static public files
+      run: cp -r public dist/public
+      working-directory: ./backend
+    - name: Setup .env file
+      run: | 
+        cp .env.sample dist/.env
+        sed -i 's/<node_env>/prod/' dist/.env
+        sed -i 's/<mysql_host>/'"'"'${{ secrets.DH_MASTELARI_MYSQL_HOST }}'"'"'/' dist/.env
+        sed -i 's/<mysql_port>/${{ secrets.DH_MASTELARI_MYSQL_PORT }}/' dist/.env
+        sed -i 's/<mysql_user>/'"'"'${{ secrets.DH_MASTELARI_MYSQL_USER }}'"'"'/' dist/.env
+        sed -i 's/<mysql_user_password>/'"'"'${{ secrets.DH_MASTELARI_MYSQL_USER_PASSWORD }}'"'"'/' dist/.env
+        sed -i 's/<mysql_database_name>/'"'"'${{ secrets.DH_MASTELARI_MYSQL_DATABASE_NAME }}'"'"'/' dist/.env
+        sed -i 's/<api_port>/80/' dist/.env
+        sed -i 's/<disable_auth0>/1/' dist/.env
+        sed -i 's/<auth0_subdomain>/${{ secrets.DH_MASTELARI_AUTH0_SUBDOMAIN }}/' dist/.env
+        sed -i 's/<auth0_region>/${{ secrets.DH_MASTELARI_AUTH0_REGION }}/' dist/.env
+        sed -i 's/<auth0_app_audience>/${{ secrets.DH_MASTELARI_AUTH0_APP_AUDIENCE }}/' dist/.env
+        sed -i 's/<auth0_app_cript_algorithm>/${{ secrets.DH_MASTELARI_AUTH0_APP_CRIPT_ALGORITHM }}/' dist/.env
+      working-directory: ./backend
     - name: Publish
       uses: ArthurYdalgo/github-action-scp@master
       with:
