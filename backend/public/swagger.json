@@ -107,6 +107,24 @@
 								}
 							}
 						}
+					},
+					"404": {
+						"description": "The responder function for a not found response",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"reason": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"reason"
+									],
+									"type": "object"
+								}
+							}
+						}
 					}
 				},
 				"security": [],

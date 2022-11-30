@@ -1,4 +1,4 @@
-import { Axios, AxiosRequestConfig, AxiosResponse } from 'axios'
+import { Axios, AxiosRequestConfig } from 'axios'
 
 export interface StudioGhibliMovie {
   title: string

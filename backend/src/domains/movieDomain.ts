@@ -14,6 +14,46 @@ export interface SyncMoviesReturn {
   movies_added: number
 }
 export default class MovieDomain {
+  public async getMovie (movieId: number): Promise<RawMovie | null> {
+    const movieRepository = datasource.getRepository(Movie)
+    const movieFromId = await movieRepository.findOneBy({
+      id: movieId
+    })
+    if (movieFromId !== null) {
+      return {
+        id: movieFromId.id,
+        title: movieFromId.title,
+        banner: movieFromId.banner,
+        description: movieFromId.description,
+        director: movieFromId.director,
+        producer: movieFromId.producer
+      }
+    }
+    return null
+  }
+
+  public async listMovies (page: number, pageSize: number): Promise<RawMovie[]> {
+    const listMoviesReturn: RawMovie[] = []
+    const movieRepository = datasource.getRepository(Movie)
+    const movies = await movieRepository.find({
+      order: { title: 'ASC' },
+      take: pageSize,
+      skip: page > 1 ? (page - 1) * pageSize : 0
+    })
+
+    for (const movie of movies) {
+      listMoviesReturn.push({
+        id: movie.id,
+        title: movie.title,
+        banner: movie.banner,
+        description: movie.description,
+        director: movie.director,
+        producer: movie.producer
+      })
+    }
+    return listMoviesReturn
+  }
+
   public async syncMovies (movies: RawMovie[]): Promise<SyncMoviesReturn> {
     let moviesAdded = 0
     const movieRepository = datasource.getRepository(Movie)

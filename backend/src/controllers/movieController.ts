@@ -6,7 +6,9 @@ import {
   Path,
   Query,
   Post,
-  Route
+  Route,
+  Res,
+  TsoaResponse
 } from 'tsoa'
 
 @Route('movies')
@@ -15,26 +17,25 @@ export class MovieController extends Controller {
   public async list (
     @Query() page?: number
   ): Promise<RawMovie[]> {
-    // const limit = 10
-    const listResult: RawMovie[] = []
-    // Call movies domain list
-    return await Promise.resolve(listResult)
+    const movieDomain = new MovieDomain()
+    const listResult = await movieDomain.listMovies(page === undefined ? 1 : page, 10)// Call movies domain list
+    return listResult
   }
 
+  /**
+   * @param notFoundResponse The responder function for a not found response
+   */
   @Get('{userId}')
   public async get (
-    @Path() userId: number
+    @Path() userId: number, @Res() notFoundResponse: TsoaResponse<404, { reason: string }>
   ): Promise<RawMovie> {
-    const getResult: RawMovie = {
-      id: 0,
-      banner: '',
-      description: '',
-      director: '',
-      producer: '',
-      title: ''
+    const movieDomain = new MovieDomain()
+    const getResult = await movieDomain.getMovie(userId)// Call movie domain get
+    if (getResult !== null) {
+      return getResult
     }
-    // Call movie domain get
-    return await Promise.resolve(getResult)
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return notFoundResponse(404, { reason: 'Movie not found' })
   }
 
   @Post('/sync')

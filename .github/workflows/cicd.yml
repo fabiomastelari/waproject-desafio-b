@@ -49,7 +49,20 @@ jobs:
         cd ./backend
         yarn install
         yarn build
-        cp package.json ./dist/
+        cp -r ./public ./dist/public
+        cp ./.env.sample ./dist/.env
+        sed -n -E '/<node_env> prod/p' ./dist/.env
+        sed -n -E '/<mysql_host> '"'"'${{ secrets.DH_MASTELARI_MYSQL_HOST }}'"'"'/p' ./dist/.env
+        sed -n -E '/<mysql_port> ${{ secrets.DH_MASTELARI_MYSQL_PORT }}/p' ./dist/.env
+        sed -n -E '/<mysql_user> '"'"'${{ secrets.DH_MASTELARI_MYSQL_USER }}'"'"'/p' ./dist/.env
+        sed -n -E '/<mysql_user_password> '"'"'${{ secrets.DH_MASTELARI_MYSQL_USER_PASSWORD }}'"'"'/p' ./dist/.env
+        sed -n -E '/<mysql_database_name> '"'"'${{ secrets.DH_MASTELARI_MYSQL_DATABASE_NAME }}'"'"'/p' ./dist/.env
+        sed -n -E '/<api_port> 80/p' ./dist/.env
+        sed -n -E '/<disable_auth0> 1/p' ./dist/.env
+        sed -n -E '/<auth0_subdomain> ${{ secrets.DH_MASTELARI_AUTH0_SUBDOMAIN }}/p' ./dist/.env
+        sed -n -E '/<auth0_region> ${{ secrets.DH_MASTELARI_AUTH0_REGION }}/p' ./dist/.env
+        sed -n -E '/<auth0_app_audience> ${{ secrets.DH_MASTELARI_AUTH0_APP_AUDIENCE }}/p' ./dist/.env
+        sed -n -E '/<auth0_app_cript_algorithm> ${{ secrets.DH_MASTELARI_AUTH0_APP_CRIPT_ALGORITHM }}/p' ./dist/.env
     - name: Publish
       uses: ArthurYdalgo/github-action-scp@master
       with:
