@@ -85,6 +85,7 @@ jobs:
           [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
           cd ~/wpdesafiob-api.mastelari.ml
           yarn install --production
+          yarn migration:run
           touch tmp/restart.txt
   deploy-app:
     runs-on: ubuntu-latest

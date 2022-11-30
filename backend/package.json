@@ -1,6 +1,6 @@
 {
   "name": "wa-project-desafio-b-api",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "WA Project Desafio B API",
   "engines": {
     "node": "^12.*"

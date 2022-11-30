@@ -29,7 +29,7 @@ With these pre-requisites fulfilled:
       - Execute `yarn build`
       - Execute `yarn start`
 6. API Routes:
-   - `GET \` return information about API name and version
+   - `GET \docs` API Swagger
    - `GET \movies?page={page_number}` return movies with pagination options - displays 10 movies by page
    - `GET \movies\{movie_id}` return information about the movie identificated by its id
    - `POST \movies\sync` synchronize api database with the first 50 movies returned from https://ghibliapi.herokuapp.com/#tag/Films
