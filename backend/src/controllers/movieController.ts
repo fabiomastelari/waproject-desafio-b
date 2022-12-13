@@ -16,10 +16,10 @@ export class MovieController extends Controller {
   @Get()
   public async list (
     @Query() page?: number
-  ): Promise<RawMovie[]> {
+  ): Promise<{ movies: RawMovie[], movieTotalCount: number }> {
     const movieDomain = new MovieDomain()
-    const listResult = await movieDomain.listMovies(page === undefined ? 1 : page, 10)// Call movies domain list
-    return listResult
+    const [listResult, totalQtt] = await movieDomain.listMovies(page === undefined ? 1 : page, 10)// Call movies domain list
+    return { movies: listResult, movieTotalCount: totalQtt }
   }
 
   /**

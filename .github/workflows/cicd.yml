@@ -81,7 +81,7 @@ jobs:
       working-directory: ./backend/dist
     - name: Setup .env file - Set AUTH0 environment variables - DISABLE_AUTH0
       run: |
-        sed -i 's/<disable_auth0>/ 1/' .env
+        sed -i 's/<disable_auth0>/ 0/' .env
       working-directory: ./backend/dist
     - name: Setup .env file - Set AUTH0 environment variables - AUTH0_SUBDOMAIN
       run: |
@@ -133,12 +133,44 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: '12.22.12'
-    - run: |
-        cd ./frontend
-        yarn install
-        yarn build
-        tar --exclude={".env.sample",".env.local","README.md","next-env.d.ts","jest.config.ts",".eslintrc.json","__tests__",".next","node_modules",".swc","coverage","out"} -zcvf ../build-content.tar.gz .
-    - name: Publish
+    - name: Installing packages
+      run: yarn install
+      working-directory: ./frontend
+    - name: Setup .env file - Copy from sample
+      run: cp .env.sample .env
+      working-directory: ./frontend
+    - name: Setup .env file - Set NODE_ENV to prod
+      run: sed -i 's/<node_env>/prod/' .env
+      working-directory: ./frontend
+    - name: Setup .env file - Set PORT to 80
+      run: sed -i 's/<app_port>/80/' .env
+      working-directory: ./frontend      
+    - name: Setup .env file - Set API_URL to https://wpdesafiob-api.mastelari.ml
+      run: sed -i 's/<api_url>/'"'"'https\:\/\/wpdesafiob\-api\.mastelari\.ml'"'"'/' .env
+      working-directory: ./frontend      
+    - name: Setup .env file - Set AUTH0 environment variables - DISABLED_AUTH0
+      run: |
+        sed -i 's/<disabled_auth0>/ 0/' .env
+      working-directory: ./frontend
+    - name: Setup .env file - Set AUTH0 environment variables - AUTH0_CLIENT_ID
+      run: |
+        sed -i 's/<auth0_client_id>/'"'"'${{ secrets.DH_MASTELARI_AUTH0_CLIENT_ID }}'"'"'/' .env
+      working-directory: ./frontend
+    - name: Setup .env file - Set AUTH0 environment variables - AUTH0_CLIENT_SECRET
+      run: |
+        sed -i 's/<auth0_client_secret>/'"'"'${{ secrets.DH_MASTELARI_AUTH0_CLIENT_SECRET }}'"'"'/' .env
+      working-directory: ./frontend
+    - name: Setup .env file - Set AUTH0 environment variables - AUTH0_AUDIENCE
+      run: |
+        sed -i 's/<auth0_audience>/${{ secrets.DH_MASTELARI_AUTH0_APP_AUDIENCE }}/' .env
+      working-directory: ./frontend
+    - name: Building
+      run: yarn build
+      working-directory: ./frontend
+    - name: Packaging
+      run: tar --exclude={".env.sample",".env.local","README.md","next-env.d.ts","jest.config.ts",".eslintrc.json","__tests__",".next","node_modules",".swc","coverage","out"} -zcvf ../build-content.tar.gz .
+      working-directory: ./frontend
+    - name: Publishing
       uses: ArthurYdalgo/github-action-scp@master
       with:
         host: ${{ secrets.DH_MASTELARI_SSHHOST }}

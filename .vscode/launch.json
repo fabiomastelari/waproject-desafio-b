@@ -6,15 +6,42 @@
   "configurations": [
     {
       "type": "node",
+      "env": {
+        "NODE_OPTIONS": "--inspect"
+      },
       "request": "launch",
       "runtimeExecutable": "yarn",
       "runtimeArgs": [
-        "--cwd",
-        "${workspaceFolder}/backend/",
         "debug"
       ],
+      "cwd": "${workspaceFolder}/backend",
       "name": "Debug API",
-      "sourceMaps": true,
+      "sourceMaps": true
+    },
+    {
+      "name": "Debug APP - Next.js: debug server-side",
+      "type": "node-terminal",
+      "request": "launch",
+      "env": {
+        "PORT": "3001",
+        "NODE_OPTIONS": "--inspect"
+      },
+      "command": "yarn dev",
+      "cwd": "${workspaceFolder}/frontend",
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "name": "Debug APP - Next.js: debug client-side",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:3001",
+      "webRoot": "${workspaceFolder}/frontend"
+    },
+  ],
+  "compounds": [
+    {
+        "name": "Debug APP - Next.js: debug full stack",
+        "configurations": ["Debug APP - Next.js: debug server-side", "Debug APP - Next.js: debug client-side"]
     }
   ]
 }
