@@ -21,35 +21,37 @@ const Layout = ({ children, page, lastPage, apiToken, title = 'Ghibli movies sho
   }, [apiToken])
 
   const handleSyncronizeClick = () =>  {
-    if (!syncStarted && (apiToken!=='' || (process.env.DISABLED_AUTH0 !== undefined && process.env.DISABLED_AUTH0))) {
-    const requestHeaders: Record<string, any> = {
-      'Content-Type': 'application/json',
-      'Accept-Encoding': 'utf8',
-    }
+    const enabledAuth0 = process.env.NEXT_PUBLIC_DISABLED_AUTH0 !== undefined && process.env.NEXT_PUBLIC_DISABLED_AUTH0 === '0'
 
-    if(!(process.env.DISABLED_AUTH0 !== undefined && process.env.DISABLED_AUTH0) && apiToken!=='') {
-      requestHeaders.authorization = `Bearer ${apiToken}`
-    }
+    if (!syncStarted && (apiToken!=='' || !enabledAuth0)) {
+      const requestHeaders: Record<string, any> = {
+        'Content-Type': 'application/json',
+        'Accept-Encoding': 'utf8',
+      }
 
-    setSyncStarted(true)
-    setSyncDisabled(true)
-    const axiosRequestConfig: AxiosRequestConfig = {
-      headers: requestHeaders,
-      responseType: 'json',
-      responseEncoding: 'utf8',
-    }
-    const axiosInstance = new Axios(axiosRequestConfig)
-    axiosInstance
-      .post<string>(`${ process.env.API_URL !== undefined ? process.env.API_URL : 'http://localhost:3000' }/movies/sync`)
-      .then((syncMoviesResponse) => {
-        console.log(syncMoviesResponse)
-      })
-      .catch((syncMoviesException)=>{
-        console.error(syncMoviesException)
-      })
-      .finally(() => {
-        setSyncStarted(false)
-      })
+      if(enabledAuth0 && apiToken!=='') {
+        requestHeaders.authorization = `Bearer ${apiToken}`
+      }
+
+      setSyncStarted(true)
+      setSyncDisabled(true)
+      const axiosRequestConfig: AxiosRequestConfig = {
+        headers: requestHeaders,
+        responseType: 'json',
+        responseEncoding: 'utf8',
+      }
+      const axiosInstance = new Axios(axiosRequestConfig)
+      axiosInstance
+        .post<string>(`${ process.env.NEXT_PUBLIC_API_URL !== undefined ? process.env.NEXT_PUBLIC_API_URL : 'http://localhost:3000' }/movies/sync`)
+        .then((syncMoviesResponse) => {
+          console.log(syncMoviesResponse)
+        })
+        .catch((syncMoviesException)=>{
+          console.error(syncMoviesException)
+        })
+        .finally(() => {
+          setSyncStarted(false)
+        })
     }
   }
 

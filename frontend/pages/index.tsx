@@ -22,20 +22,25 @@ const IndexPage = (): React.ReactElement => {
   }, [pageFromQuery])
 
   useEffect(() => {
-    if (process.env.DISABLED_AUTH0 === undefined || !process.env.DISABLED_AUTH0) {
+    const enabledAuth0 = process.env.NEXT_PUBLIC_DISABLED_AUTH0 !== undefined && process.env.NEXT_PUBLIC_DISABLED_AUTH0 === '0'
+    console.log('enabledAuth0', enabledAuth0)
+    if (enabledAuth0) {
       const axiosRequestConfig: AxiosRequestConfig = {
         headers: {'content-type': 'application/x-www-form-urlencoded'},
-      };
+      }
 
       const getTokenData = new URLSearchParams({
         grant_type: 'client_credentials',
-        client_id: process.env.AUTH0_CLIENT_ID !== undefined ? process.env.AUTH0_CLIENT_ID :'',
-        client_secret: process.env.AUTH0_CLIENT_SECRET !== undefined ? process.env.AUTH0_CLIENT_SECRET : '',
-        audience: process.env.AUTH0_CLIENT_AUDIENCE !== undefined ? process.env.AUTH0_CLIENT_AUDIENCE : ''
+        client_id: process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID !== undefined ? process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID :'',
+        client_secret: process.env.NEXT_PUBLIC_AUTH0_CLIENT_SECRET !== undefined ? process.env.NEXT_PUBLIC_AUTH0_CLIENT_SECRET : '',
+        audience: process.env.NEXT_PUBLIC_AUTH0_AUDIENCE !== undefined ? process.env.NEXT_PUBLIC_AUTH0_AUDIENCE : ''
       })
 
+      console.log('getTokenData', getTokenData)
+
       const axiosInstance = new Axios(axiosRequestConfig)
-      axiosInstance.post(`${process.env.AUTH0_ISSUER_URI !== undefined ? process.env.AUTH0_ISSUER_URI :'/'}oauth/token`, getTokenData).then(function (response) {
+      console.log(`${process.env.NEXT_PUBLIC_AUTH0_ISSUER_URI !== undefined ? process.env.NEXT_PUBLIC_AUTH0_ISSUER_URI :'/'}oauth/token`)
+      axiosInstance.post(`${process.env.NEXT_PUBLIC_AUTH0_ISSUER_URI !== undefined ? process.env.NEXT_PUBLIC_AUTH0_ISSUER_URI :'/'}oauth/token`, getTokenData).then(function (response) {
         if (response.data !== undefined) {
           const getTokenResponseData = JSON.parse(response.data)  
           setApitoken(getTokenResponseData.access_token)
@@ -49,13 +54,14 @@ const IndexPage = (): React.ReactElement => {
   }, [])
 
   useEffect(() => {
-    if (apiToken!=='' || (process.env.DISABLED_AUTH0 !== undefined && process.env.DISABLED_AUTH0)) {
+    const enabledAuth0 = process.env.NEXT_PUBLIC_DISABLED_AUTH0 !== undefined && process.env.NEXT_PUBLIC_DISABLED_AUTH0 === '0'
+    if (apiToken!=='' || !enabledAuth0) {
       const requestHeaders: Record<string, any> = {
         'Content-Type': 'application/json',
         'Accept-Encoding': 'utf8',
       }
 
-      if(!(process.env.DISABLED_AUTH0 !== undefined && process.env.DISABLED_AUTH0) && apiToken!=='') {
+      if(enabledAuth0 && apiToken!=='') {
         requestHeaders.authorization = `Bearer ${apiToken}`
       }
 
@@ -66,7 +72,7 @@ const IndexPage = (): React.ReactElement => {
       }
       const axiosInstance = new Axios(axiosRequestConfig)
       axiosInstance
-        .get<string>(`${ process.env.API_URL !== undefined ? process.env.API_URL : 'http://localhost:3000' }/movies?page=${page}`)
+        .get<string>(`${ process.env.NEXT_PUBLIC_API_URL !== undefined ? process.env.NEXT_PUBLIC_API_URL : 'http://localhost:3000' }/movies?page=${page}`)
         .then((getMoviesResponse) => {
           const retrievedMovies: Movie[] = []
           if (getMoviesResponse.data !== undefined) {
