@@ -12,6 +12,8 @@ With these pre-requisites fulfilled:
    - `<auth0_client_id>` to the auth0 application client id
    - `<auth0_client_secret>` to the auth0 application client secret
    - `<auth0_audience>` to the auth0 application audience
+   - `<auth0_subdomain>` to the auth0 application subdomain
+   - `<auth0_region>` to the auth0 application region code
 3. Install dependencies:
    - Execute `yarn install`
 4. To run:
