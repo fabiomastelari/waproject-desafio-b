@@ -35,7 +35,7 @@ const IndexPage = (): React.ReactElement => {
       })
 
       const axiosInstance = new Axios(axiosRequestConfig)
-      axiosInstance.post('https://dev-7mgcjhx8c1e0134r.us.auth0.com/oauth/token', getTokenData).then(function (response) {
+      axiosInstance.post(`${process.env.AUTH0_ISSUER_URI !== undefined ? process.env.AUTH0_ISSUER_URI :'/'}oauth/token`, getTokenData).then(function (response) {
         if (response.data !== undefined) {
           const getTokenResponseData = JSON.parse(response.data)  
           setApitoken(getTokenResponseData.access_token)

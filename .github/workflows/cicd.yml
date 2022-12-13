@@ -164,6 +164,14 @@ jobs:
       run: |
         sed -i 's/<auth0_audience>/${{ secrets.DH_MASTELARI_AUTH0_APP_AUDIENCE }}/' .env
       working-directory: ./frontend
+    - name: Setup .env file - Set AUTH0 environment variables - AUTH0_SUBDOMAIN
+      run: |
+        sed -i 's/<auth0_subdomain>/${{ secrets.DH_MASTELARI_AUTH0_SUBDOMAIN }}/' .env
+      working-directory: ./frontend
+    - name: Setup .env file - Set AUTH0 environment variables - AUTH0_REGION
+      run: |
+        sed -i 's/<auth0_region>/${{ secrets.DH_MASTELARI_AUTH0_REGION }}/' .env
+      working-directory: ./frontend
     - name: Building
       run: yarn build
       working-directory: ./frontend
