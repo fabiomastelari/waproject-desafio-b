@@ -2,6 +2,7 @@ import React, { ReactNode, useEffect, useState } from 'react'
 import Link from 'next/link'
 import Head from 'next/head'
 import { Axios, AxiosRequestConfig } from 'axios'
+import Notifications, {notify} from 'react-notify-toast';
 
 interface Props {
   children?: ReactNode
@@ -44,13 +45,24 @@ const Layout = ({ children, page, lastPage, apiToken, title = 'Ghibli movies sho
       axiosInstance
         .post<string>(`${ process.env.NEXT_PUBLIC_API_URL !== undefined ? process.env.NEXT_PUBLIC_API_URL : 'http://localhost:3000' }/movies/sync`)
         .then((syncMoviesResponse) => {
-          console.log(syncMoviesResponse)
+          if (syncMoviesResponse.data !== undefined) {
+            const syncMoviesResultDataObj = JSON.parse(syncMoviesResponse.data)
+            if (syncMoviesResponse.status >= 500 ) {
+              notify.show(`Unable to sync movies: ${syncMoviesResultDataObj.reason ? syncMoviesResultDataObj.reason : 'Service Unavailable'}`, 'error', 5000)
+            } else if (syncMoviesResponse.status === 200) {
+              notify.show(`Movies sync: ${syncMoviesResultDataObj.movies_added ? syncMoviesResultDataObj.movies_added : 'Unknown number of '} movies added.`, 'success', 5000)
+            } else {
+              notify.show('Unable to sync movies due to an unexpected error', 'error', 5000)
+            }
+          }
         })
         .catch((syncMoviesException)=>{
+          notify.show('Unable to sync movies due to an unexpected error.', 'error', 5000)
           console.error(syncMoviesException)
         })
         .finally(() => {
           setSyncStarted(false)
+          setSyncDisabled(false)
         })
     }
   }
@@ -80,7 +92,7 @@ const Layout = ({ children, page, lastPage, apiToken, title = 'Ghibli movies sho
               <div className="font-semibold block mt-4 lg:inline-block lg:mt-0 text-white mr-4">Page {page} of { lastPage }</div>
             </div>
             <div className="min-w-fit block justify-center items-center" >
-              <button className="flex justify-center items-center text-teal-600 shadow-md bg-slate-100 rounded-md py-1 px-2" onClick={handleSyncronizeClick} disabled={syncDisabled}>
+              <button className="flex justify-center items-center text-teal-600 shadow-md bg-slate-100 disabled:bg-slate-400 rounded-md py-1 px-2" onClick={handleSyncronizeClick} disabled={syncDisabled}>
                 <div role="status">
                   <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" className={ syncStarted ? 'mr-2 w-4 h-4 fill-teal-800 animate-spin': 'mr-2 w-4 h-4 fill-teal-800' }
                     width="100" height="100"
@@ -92,8 +104,10 @@ const Layout = ({ children, page, lastPage, apiToken, title = 'Ghibli movies sho
               </button> 
             </div>
           </nav>
+          <Notifications />
         </header>
         <div className="h-auto">
+        
         {children}
         </div>
         <footer className="absolute bottom-0 h-10 mt-1 w-full p-2 pb-4 flex justify-center self-end bg-slate-50 text-slate-400 max-h-fit">

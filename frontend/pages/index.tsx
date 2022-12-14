@@ -23,7 +23,6 @@ const IndexPage = (): React.ReactElement => {
 
   useEffect(() => {
     const enabledAuth0 = process.env.NEXT_PUBLIC_DISABLED_AUTH0 !== undefined && process.env.NEXT_PUBLIC_DISABLED_AUTH0 === '0'
-    console.log('enabledAuth0', enabledAuth0)
     if (enabledAuth0) {
       const axiosRequestConfig: AxiosRequestConfig = {
         headers: {'content-type': 'application/x-www-form-urlencoded'},
@@ -36,10 +35,7 @@ const IndexPage = (): React.ReactElement => {
         audience: process.env.NEXT_PUBLIC_AUTH0_AUDIENCE !== undefined ? process.env.NEXT_PUBLIC_AUTH0_AUDIENCE : ''
       })
 
-      console.log('getTokenData', getTokenData)
-
       const axiosInstance = new Axios(axiosRequestConfig)
-      console.log(`${process.env.NEXT_PUBLIC_AUTH0_ISSUER_URI !== undefined ? process.env.NEXT_PUBLIC_AUTH0_ISSUER_URI :'/'}oauth/token`)
       axiosInstance.post(`${process.env.NEXT_PUBLIC_AUTH0_ISSUER_URI !== undefined ? process.env.NEXT_PUBLIC_AUTH0_ISSUER_URI :'/'}oauth/token`, getTokenData).then(function (response) {
         if (response.data !== undefined) {
           const getTokenResponseData = JSON.parse(response.data)  
