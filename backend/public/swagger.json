@@ -71,10 +71,23 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"items": {
-										"$ref": "#/components/schemas/RawMovie"
+									"properties": {
+										"movieTotalCount": {
+											"type": "number",
+											"format": "double"
+										},
+										"movies": {
+											"items": {
+												"$ref": "#/components/schemas/RawMovie"
+											},
+											"type": "array"
+										}
 									},
-									"type": "array"
+									"required": [
+										"movieTotalCount",
+										"movies"
+									],
+									"type": "object"
 								}
 							}
 						}
@@ -151,6 +164,24 @@
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/SyncMoviesReturn"
+								}
+							}
+						}
+					},
+					"503": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"reason": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"reason"
+									],
+									"type": "object"
 								}
 							}
 						}

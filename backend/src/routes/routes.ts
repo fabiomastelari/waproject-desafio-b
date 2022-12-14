@@ -98,6 +98,7 @@ export function RegisterRoutes(app: express.Router) {
 
             function MovieController_sync(request: any, response: any, next: any) {
             const args = {
+                    serviceUnavailable: {"in":"res","name":"503","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"reason":{"dataType":"string","required":true}}},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa

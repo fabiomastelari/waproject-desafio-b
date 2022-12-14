@@ -32,9 +32,10 @@ export default class MovieDomain {
     return null
   }
 
-  public async listMovies (page: number, pageSize: number): Promise<RawMovie[]> {
+  public async listMovies (page: number, pageSize: number): Promise<[RawMovie[], number]> {
     const listMoviesReturn: RawMovie[] = []
     const movieRepository = datasource.getRepository(Movie)
+    const moviesTotalQtt = await movieRepository.count()
     const movies = await movieRepository.find({
       order: { title: 'ASC' },
       take: pageSize,
@@ -51,7 +52,7 @@ export default class MovieDomain {
         producer: movie.producer
       })
     }
-    return listMoviesReturn
+    return [listMoviesReturn, moviesTotalQtt]
   }
 
   public async syncMovies (movies: RawMovie[]): Promise<SyncMoviesReturn> {
