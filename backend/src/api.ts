@@ -45,7 +45,7 @@ if (process.env.NODE_ENV !== 'test' && process.env.DISABLE_AUTH0 !== '1') {
     audience: process.env.AUTH0_AUDIENCE,
     issuer: process.env.AUTH0_ISSUER_URI,
     algorithms: [getAuth0CriptAlgorithm(process.env.AUTH0_ALGORITHM, 'RS256')]
-  })
+  }).unless({ path: ['/docs'] })
 
   api.use(jwtCheck)// eslint-disable-line @typescript-eslint/no-misused-promises
 }
