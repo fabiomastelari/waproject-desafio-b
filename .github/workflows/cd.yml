@@ -194,7 +194,7 @@ jobs:
       run: yarn build
       working-directory: ./frontend
     - name: Packaging
-      run: tar --exclude={".env.sample",".env.local","README.md","next-env.d.ts","jest.config.ts",".eslintrc.json","__tests__",".next","node_modules",".swc","coverage","out"} -zcvf ../build-content.tar.gz .
+      run: tar --exclude={".env.sample",".env.local","README.md","next-env.d.ts","jest.config.ts",".eslintrc.json","__tests__",".next","node_modules","cypress",".swc","coverage","out"} -zcvf ../build-content.tar.gz .
       working-directory: ./frontend
     - name: Publishing
       uses: ArthurYdalgo/github-action-scp@master
