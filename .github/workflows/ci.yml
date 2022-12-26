@@ -34,6 +34,11 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: '12.22.12'
+        cache: 'yarn'
+    - name: Cypress
+      uses: cypress-io/github-action@v4
+      with:
+        browser: chrome
     - name: Install packages
       run: yarn install
       working-directory: ./frontend
@@ -46,3 +51,6 @@ jobs:
     - name: Run unit-tests
       run: yarn test --passWithNoTests 
       working-directory: ./frontend
+    - name: Run e2e tests
+      run: yarn test:e2e
+      working-directory: ./frontend      

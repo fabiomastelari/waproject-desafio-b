@@ -6,7 +6,9 @@
     "export": "next export",
     "lint": "next lint",
     "test-local": "jest --watch",
-    "test": "jest"
+    "test": "jest",
+    "test:e2e:open": "cypress open",
+    "test:e2e": "cypress run --config-file=cypress.config.ts"
   },
   "engines": {
     "node": "^12.*"
