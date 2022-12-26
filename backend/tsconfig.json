@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
-        "lib": ["es5", "es6", "dom", "esnext"],
-        "target": "esnext",
+        "lib": ["es5", "es6", "dom", "ES2019"],
+        "target": "ES2019",
         "module": "commonjs",
         "outDir": "./dist",
         "rootDir": "./src",
@@ -11,6 +11,8 @@
         "strict": true,
         "esModuleInterop": true
     },
-    "include": ["src/**/*.ts"],
+    "include": [
+        "src/**/*.ts"
+    ],
     "exclude": ["node_modules"]
 }

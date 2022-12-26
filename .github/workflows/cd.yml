@@ -1,13 +1,13 @@
 # This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
 
-name: WA Project Desafio B CI - Continuous Integration
+name: WA Project Desafio B CD - Continuous Delivery
 
 on:
   push:
     branches: [ "main" ]
 jobs:
-  tests-api:
+  lint-and-test-api:
     runs-on: ubuntu-latest
     name: Check API Lint and run Tests
     steps:
@@ -16,12 +16,16 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: '12.22.12'
-    - run: |
-        cd ./backend
-        yarn install
-        yarn lint
-        yarn test --passWithNoTests 
-  tests-app:
+    - name: Install packages
+      run: yarn install
+      working-directory: ./backend
+    - name: Run Linter
+      run: yarn lint
+      working-directory: ./backend
+    - name: Run unit-tests
+      run: yarn test --passWithNoTests 
+      working-directory: ./backend
+  lint-and-test-app:
     runs-on: ubuntu-latest
     name: Check APP Lint and run Tests
     steps:
@@ -30,14 +34,21 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: '12.22.12'
-    - run: |
-        cd ./frontend
-        yarn install
-        yarn lint
-        yarn test --passWithNoTests
+    - name: Install packages
+      run: yarn install
+      working-directory: ./frontend
+    - name: Run Linter
+      run: yarn lint
+      working-directory: ./frontend
+    - name: Run Linter
+      run: yarn lint
+      working-directory: ./frontend
+    - name: Run unit-tests
+      run: yarn test --passWithNoTests 
+      working-directory: ./frontend
   deploy-api:
     runs-on: ubuntu-latest
-    needs: [tests-api, tests-app]
+    needs: [lint-and-test-api, lint-and-test-app]
     defaults:
       run:
         shell: bash

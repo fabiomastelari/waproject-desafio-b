@@ -22,10 +22,9 @@ export const getDatasourceConfig = (): DataSourceOptions => {
         logger: 'file'
       }
     : {
-        type: 'sqlite',
-        database: 'wapdb-db',
+        type: 'better-sqlite3',
+        database: ':memory:',
         entities: ['src/entity/*.ts'],
-        migrations: ['src/migration/*.ts'],
         logging: false,
         synchronize: true
       }

@@ -34,6 +34,7 @@
     "@testing-library/react": "^13.4.0",
     "@types/jest": "^28.*",
     "autoprefixer": "^10.4.13",
+    "cypress": "^11.*",
     "eslint-config-prettier": "^8.5.0",
     "jest": "^28.*",
     "jest-environment-jsdom": "^28.*",
