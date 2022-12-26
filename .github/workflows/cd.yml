@@ -34,6 +34,7 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: '12.22.12'
+        cache-dependency-path: './frontend'
         cache: 'yarn'
     - name: Cypress
       uses: cypress-io/github-action@v4
