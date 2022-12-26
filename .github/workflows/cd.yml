@@ -39,6 +39,7 @@ jobs:
     - name: Cypress
       uses: cypress-io/github-action@v4
       with:
+        working-directory: './frontend'
         browser: chrome
     - name: Install packages
       run: yarn install
