@@ -4,8 +4,6 @@
 name: WA Project Desafio B CI - Continuous Integration
 
 on:
-  push:
-    branches: [ "main" ]
   pull_request:
     types: [opened, synchronize]
 jobs:
