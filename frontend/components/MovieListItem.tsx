@@ -7,7 +7,7 @@ export interface MovieListProps {
 }
 export default function MovieListItem({ movie }: MovieListProps): ReactElement {
   return (
-    <article className="flex sm:flex-wrap items-start space-x-6 p-6 bg-slate-100 m-2 rounded-lg">
+    <article className="flex flex-wrap md:flex-nowrap items-start space-x-6 p-6 bg-slate-100 m-2 rounded-lg">
       <div className='min-w-max flex-none'>
         <Image src={ movie.banner } alt="" width="358" height="176" layout="fixed" objectFit="cover" className="flex-none rounded-md bg-slate-100" />
       </div>
